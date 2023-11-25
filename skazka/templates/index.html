@@ -309,14 +309,7 @@
                     </div>
                     <div class="quiz__wrapper">
                         <form method="post" class="quiz__wrapper" data-action="quiz">
-                            <input type="hidden" name="_token" value="YN89UzERIDkHGd0oampBP3Wo8QYPSFgvob7nulGe">
-                            <div id="my_name_GIeuDSFks8J2hzvE_wrap" style="display: none" aria-hidden="true">
-                                <input id="my_name_GIeuDSFks8J2hzvE" name="my_name_GIeuDSFks8J2hzvE" type="text"
-                                    value="" autocomplete="nope" tabindex="-1">
-                                <input name="valid_from" type="text"
-                                    value="eyJpdiI6InhNNGNTbUtXSCtTRGY4SkxvWFc2RHc9PSIsInZhbHVlIjoiV0tuNXB6dzFyMm9nMU5ydElsVEVqUT09IiwibWFjIjoiYzhjMTBiZjkxNzUzM2IyOThhMTA5MDRkM2VjYTQ3N2ZlMmRkYTkzMTUyMmQ3OGE2ZGRkZjk5ZDNlOTUzMWJmYyIsInRhZyI6IiJ9"
-                                    autocomplete="nope" tabindex="-1">
-                            </div>
+                            {% csrf_token %}
                             <input type="hidden" name="from" value="Подобрать квартиру">
                             <div class="quiz__steps quiz-steps">
                                 <div class="quiz-steps__swiper swiper">
@@ -3013,14 +3006,7 @@
                             Оставьте свои данные и наш менеджер свяжется с Вами в ближайшее время.
                         </p>
                         <form method="post" data-action="apartments">
-                            <input type="hidden" name="_token" value="YN89UzERIDkHGd0oampBP3Wo8QYPSFgvob7nulGe">
-                            <div id="my_name_7f1120MyKc87Eatq_wrap" style="display: none" aria-hidden="true">
-                                <input id="my_name_7f1120MyKc87Eatq" name="my_name_7f1120MyKc87Eatq" type="text"
-                                    value="" autocomplete="nope" tabindex="-1">
-                                <input name="valid_from" type="text"
-                                    value="eyJpdiI6IkQrejBGVkk0d3l6czRLWGNvYThxOGc9PSIsInZhbHVlIjoibFZhZ0hDampDWHdqT1VwdnJVdzNGUT09IiwibWFjIjoiNDlmY2Y1YmE5NGE0ODJkYTg1ODE1MzRhOGEyMTVlM2IzMTNmNDQ1MTI0ZTIwMGQ1ZmI0YTFmYmU4MGYzOTdhMCIsInRhZyI6IiJ9"
-                                    autocomplete="nope" tabindex="-1">
-                            </div>
+                            {% csrf_token %}
                             <input type="hidden" name="from" value="Понравилась квартира">
                             <input type="hidden" name="apartment" id="apartmentInput">
                             <input type="tel" name="phone" class="modal__input" placeholder="+7 999 123 45 67"
