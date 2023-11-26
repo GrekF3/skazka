@@ -19,6 +19,7 @@ def send_telegram_message(chat_id, message):
         return False
 
 def index(request):
+    print(request.POST)
     contact_form = ClientForm()
     price_form = PriceForm()
     calculator_form = CalculatorForm()
@@ -38,15 +39,15 @@ def index(request):
             form_type = 'phone'
 
         if form_type:
-            return handle_form_submission(request, form_type, contact_form, price_form, calculator_form)
+            return handle_form_submission(request, form_type, price_form)
 
     return render(request, 'index.html', {'contact_form': contact_form, 'price_form': price_form, 'calculator_form': calculator_form})
 
-def handle_form_submission(request, form_type, contact_form, price_form, calculator_form):
+def handle_form_submission(request, form_type, price_form):
     if form_type == 'contact':
-        return handle_contact_form(request, contact_form)
+        return handle_contact_form(request)
     elif form_type == 'calculator':
-        return handle_calculator_form(request, calculator_form)
+        return handle_calculator_form(request)
     elif form_type == 'quiz':
         return handle_quiz_form(request)
     elif form_type == 'phone':
@@ -56,15 +57,14 @@ def handle_form_submission(request, form_type, contact_form, price_form, calcula
     else:
         return JsonResponse({'success': False, 'message': 'Форма неверная', 'errors': dict(request.POST)})
 
-def handle_contact_form(request, contact_form):
-    contact_form = ClientForm(request.POST)
-    if contact_form.is_valid():
-        phone_number = contact_form.cleaned_data['phone_contact']
+def handle_contact_form(request):
+    if 'Заявка на звонок' in request.POST['from']:
+        phone_number = request.POST['phone_contact']
         msg = f'Обратный звонок\n\n Телефон: {phone_number}'
         send_telegram_message(TELEGRAM_GROUP_CHAT_ID, msg)
         return JsonResponse({'success': True})
     else:
-        return JsonResponse({'success': False, 'message': 'Форма неверная', 'errors': dict(contact_form.errors)})
+        return JsonResponse({'success': False, 'message': 'Форма неверная', 'errors': dict(request.POST)})
 
 def handle_apartment_form(request):
     selected_options = {
@@ -80,27 +80,37 @@ def handle_apartment_form(request):
     send_telegram_message(TELEGRAM_GROUP_CHAT_ID, msg)
     return JsonResponse({'success': True})
 
-def handle_calculator_form(request, calculator_form):
-    calculator_form = CalculatorForm(request.POST)
-    if calculator_form.is_valid():
+def handle_calculator_form(request):
+    if 'Ипотека' in request.POST['from']:
+        state = ''
         from_form = request.POST['from']
         price = request.POST['price']
         first_payment = request.POST['first_payment']
         credit_term = request.POST['credit_term']
-        state = request.POST['state']
+
+        if 'state' in request.POST:
+            state = request.POST['state']
+        elif 'family' in request.POST:
+            state = request.POST['family']
+        elif 'it' in request.POST:
+            state = request.POST['it']
+
+        if 'mother' in request.POST:
+            state += ' и ' + request.POST['mother']
+
         bank = request.POST['bank']
         percents = request.POST['percents']
         payment = request.POST['payment']
         sum_value = request.POST['sum']
 
-        name = calculator_form.cleaned_data['name']
-        phone = calculator_form.cleaned_data['phone']
+        name = request.POST['name']
+        phone = request.POST['phone']
 
         msg = f'{from_form}\nСумма кредита: {price}\nПервый платеж: {first_payment}\nСрок кредита: {credit_term}\nПоддержка: {state}\nБанк: {bank} || Процент:{percents}\nПлатеж по калькулятору: {payment}\nФинальная сумма кредита: {sum_value}\n\nФИО: {name}\nТелефон: {phone}'
         send_telegram_message(TELEGRAM_GROUP_CHAT_ID, msg)
         return JsonResponse({'success': True})
     else:
-        return JsonResponse({'success': False, 'message': 'Форма неверная', 'errors': dict(calculator_form.errors)})
+        return JsonResponse({'success': False, 'message': 'Форма неверная', 'errors': dict(request.POST)})
 
 def handle_quiz_form(request):
     selected_options = {

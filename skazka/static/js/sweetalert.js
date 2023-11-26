@@ -1,119 +1,129 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Получаем все формы на странице
-    var forms = document.querySelectorAll('form');
+  // Получаем все формы на странице
+  var forms = document.querySelectorAll('form');
 
-    // Для каждой формы добавляем обработчик события отправки
-    forms.forEach(function(form) {
-      form.addEventListener('submit', function (event) {
-        event.preventDefault();
+  // Для каждой формы добавляем обработчик события отправки
+  forms.forEach(function(form) {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
 
-        // Получение данных из формы
-        var formData = new FormData(form);
+      // Получение данных из формы
+      var formData = new FormData(form);
 
-        // AJAX-запрос
-        fetch(form.action, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
-          }
-        })
-        .then(response => response.json())
-        .then(data => {
-          // Проверка ответа от сервера
-          if (data.success) {
-            // Ответ успешен, отображаем SweetAlert
-            Swal.fire({
-              title: 'Успех!',
-              text: 'Форма успешно отправлена!',
-              icon: 'success',
-              confirmButtonText: 'Ок'
-            }).then(function () {
-              // Дополнительные действия при нажатии кнопки "Ок"
-              // Например, перенаправление на другую страницу
-              // window.location.href = '/home/';
-            });
-          } else {
-            // Ответ неуспешен, отображаем SweetAlert с ошибкой
-            Swal.fire({
-              title: 'Ошибка!',
-              text: data.message || 'Что-то пошло не так. Попробуйте еще раз.',
-              icon: 'error',
-              confirmButtonText: 'Ок'
-            });
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          // Отображаем SweetAlert с ошибкой при неудачном запросе
+      // AJAX-запрос
+      fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Проверка ответа от сервера
+        if (data.success) {
+          // Ответ успешен, отображаем SweetAlert
+          Swal.fire({
+            title: 'Успех!',
+            text: 'Форма успешно отправлена!',
+            icon: 'success',
+            confirmButtonText: 'Ок'
+          }).then(function () {
+            // Дополнительные действия при нажатии кнопки "Ок"
+            // Например, перенаправление на другую страницу
+            // window.location.href = '/home/';
+          });
+        } else {
+          // Ответ неуспешен, отображаем SweetAlert с ошибкой
           Swal.fire({
             title: 'Ошибка!',
-            text: 'Что-то пошло не так. Попробуйте еще раз.',
+            text: data.message || 'Что-то пошло не так. Попробуйте еще раз.',
             icon: 'error',
             confirmButtonText: 'Ок'
           });
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Отображаем SweetAlert с ошибкой при неудачном запросе
+        Swal.fire({
+          title: 'Ошибка!',
+          text: 'Что-то пошло не так. Попробуйте еще раз.',
+          icon: 'error',
+          confirmButtonText: 'Ок'
         });
       });
     });
   });
+});
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var form = document.getElementById('get-price-form');
-    var submitBtn = document.getElementById('submitBtn');
+document.addEventListener('DOMContentLoaded', function() {
+  var form = document.getElementById('get-price-form');
+  var submitBtn = document.getElementById('submitBtn');
 
-    submitBtn.addEventListener('click', function() {
-        var selectedType = document.querySelector('.get-price__form-type.checked');
-        if (selectedType) {
-            var typeValue = selectedType.getAttribute('data-value');
-            var typeField = document.createElement('input');
-            typeField.type = 'hidden';
-            typeField.name = 'type';
-            typeField.value = typeValue;
+  submitBtn.addEventListener('click', function() {
+      var selectedType = document.querySelector('.get-price__form-type.checked');
+      if (selectedType) {
+          var typeValue = selectedType.getAttribute('data-value');
+          var typeField = document.createElement('input');
+          typeField.type = 'hidden';
+          typeField.name = 'type';
+          typeField.value = typeValue;
 
-            form.appendChild(typeField);
+          form.appendChild(typeField);
 
-            // Отправка формы через AJAX (пример с использованием Fetch API)
-            fetch(form.action, {
-                method: form.method,
-                body: new FormData(form),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Обработка успешного ответа от сервера
-                Swal.fire({
-                    title: 'Успех!',
-                    text: 'Форма успешно отправлена!',
-                    icon: 'success',
-                    confirmButtonText: 'Ок'
-                });
-            })
-            .catch(error => {
-                // Обработка ошибки
-                console.error('Ошибка при отправке формы:', error);
-                Swal.fire({
-                    title: 'Ошибка!',
-                    text: 'Произошла ошибка при отправке формы',
-                    icon: 'error',
-                    confirmButtonText: 'Ок'
-                });
-            });
-        } else {
-            Swal.fire({
-                title: 'Внимание!',
-                text: 'Выберите тип',
-                icon: 'warning',
-                confirmButtonText: 'Ок'
-            });
-        }
-    });
+          // Отправка формы через AJAX (пример с использованием Fetch API)
+          fetch(form.action, {
+              method: form.method,
+              body: new FormData(form),
+          })
+          .then(response => response.json())
+          .then(data => {
+              // Обработка успешного ответа от сервера
+              Swal.fire({
+                  title: 'Успех!',
+                  text: 'Форма успешно отправлена!',
+                  icon: 'success',
+                  confirmButtonText: 'Ок'
+              });
+          })
+          .catch(error => {
+              // Обработка ошибки
+              console.error('Ошибка при отправке формы:', error);
+              Swal.fire({
+                  title: 'Ошибка!',
+                  text: 'Произошла ошибка при отправке формы',
+                  icon: 'error',
+                  confirmButtonText: 'Ок'
+              });
+          });
+      } else {
+          Swal.fire({
+              title: 'Внимание!',
+              text: 'Выберите тип',
+              icon: 'warning',
+              confirmButtonText: 'Ок'
+          });
+      }
+  });
 
-    var typeButtons = document.querySelectorAll('.get-price__form-type');
-    typeButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            typeButtons.forEach(function(btn) {
-                btn.classList.remove('checked');
-            });
-            button.classList.add('checked');
-        });
-    });
+  var typeButtons = document.querySelectorAll('.get-price__form-type');
+  typeButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+          typeButtons.forEach(function(btn) {
+              btn.classList.remove('checked');
+          });
+          button.classList.add('checked');
+      });
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+var button = document.querySelector('.about-complex__btn');
+
+button.addEventListener('click', function() {
+    // Ищем секцию по идентификатору и используем behavior: 'smooth' для плавной прокрутки
+    document.querySelector('#quiz').scrollIntoView({ behavior: 'smooth' });
+});
 });

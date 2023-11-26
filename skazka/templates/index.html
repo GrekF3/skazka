@@ -172,7 +172,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="page-btn about-complex__btn" onclick="showMarquizModal()">
+                <button type="button" class="page-btn about-complex__btn">
                     Подобрать квартиру
                 </button>
             </div>
@@ -309,7 +309,14 @@
                     </div>
                     <div class="quiz__wrapper">
                         <form method="post" class="quiz__wrapper" data-action="quiz">
-                            {% csrf_token %}
+                            <input type="hidden" name="_token" value="YN89UzERIDkHGd0oampBP3Wo8QYPSFgvob7nulGe">
+                            <div id="my_name_GIeuDSFks8J2hzvE_wrap" style="display: none" aria-hidden="true">
+                                <input id="my_name_GIeuDSFks8J2hzvE" name="my_name_GIeuDSFks8J2hzvE" type="text"
+                                    value="" autocomplete="nope" tabindex="-1">
+                                <input name="valid_from" type="text"
+                                    value="eyJpdiI6InhNNGNTbUtXSCtTRGY4SkxvWFc2RHc9PSIsInZhbHVlIjoiV0tuNXB6dzFyMm9nMU5ydElsVEVqUT09IiwibWFjIjoiYzhjMTBiZjkxNzUzM2IyOThhMTA5MDRkM2VjYTQ3N2ZlMmRkYTkzMTUyMmQ3OGE2ZGRkZjk5ZDNlOTUzMWJmYyIsInRhZyI6IiJ9"
+                                    autocomplete="nope" tabindex="-1">
+                            </div>
                             <input type="hidden" name="from" value="Подобрать квартиру">
                             <div class="quiz__steps quiz-steps">
                                 <div class="quiz-steps__swiper swiper">
@@ -698,7 +705,11 @@
                                 
                                 <form method="post" class="quiz-manager__form">
                                     {% csrf_token %}
-                                    {{ contact_form.phone_contact }}
+                                    <input type="hidden" name="from" value="Заявка на звонок">
+                                    <input type="tel" class="quiz-manager__form-input" name="phone_contact"
+                                        placeholder="+ 7 999 123 45 67" data-inputmask="'mask': '+7 (999) 999-99-99'"
+                                        pattern="\+7(\s+)?\(?\d{3}\)?(\s+)?\d{3}(\s+)?(-)?\d{2}(\s+)?(-)?\d{2}"
+                                        autocomplete="tel" required="">
                                     <button type="submit" name="contact_form_but" class="page-btn">Отправить</button>
                                 </form>
                                 <p class="quiz__policy-text">
@@ -1421,7 +1432,10 @@
                                     </label>
                                 </div>
                                 <div class="get-price__form">
-                                    {{ price_form.phone }}
+                                    <input type="tel" class="get-price__form-input" name="phone"
+                                    placeholder="+7 999 123 45 67" data-inputmask="'mask': '+7 (999) 999-99-99'"
+                                    pattern="\+7(\s+)?\(?\d{3}\)?(\s+)?\d{3}(\s+)?(-)?\d{2}(\s+)?(-)?\d{2}" required=""
+                                    autocomplete="tel">
                                     <button type="button" id="submitBtn" class="get-price__btn">Отправить</button>
                                 </div>
                                 <p class="get-price__form-text">
@@ -2559,8 +2573,12 @@
                                 </div>
                             </div>
                             <div class="calculator-result__fields">
-                                {{ calculator_form.name }}
-                                {{ calculator_form.phone }}
+                                <input type="text" class="calculator-result__input" name="name" placeholder="ФИО"
+                                    required="" autocomplete="name">
+                                <input type="tel" class="calculator-result__input input-phone-js" name="phone"
+                                    placeholder="+7 999 123 45 67"
+                                    pattern="\+7(\s+)?\(?\d{3}\)?(\s+)?\d{3}(\s+)?(-)?\d{2}(\s+)?(-)?\d{2}" required=""
+                                    autocomplete="tel">
                             </div>
                             <p class="calculator-result__form-text">
                                 Отправляя данную форму я даю
@@ -2711,7 +2729,7 @@
             </div>
         </section>
 
-        <section class="new-container recommendations">
+        <!-- <section class="new-container recommendations">
             <h3 class="section-title recommendations__title">Посмотрите другие объекты</h3>
             <div class="recommendations__swiper swiper">
                 <div class="swiper-wrapper">
@@ -2790,7 +2808,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
     </main>
 
     <footer class="footer">
@@ -2807,11 +2825,11 @@
                             8 (928) 843-18-43
                         </a>
                     </div>
-                    <div class="footer-contacts__item">
+                    <!-- <div class="footer-contacts__item">
                         <a href="mailto:info@azbuka-novostroek.com">
                             info@azbuka-novostroek.com
                         </a>
-                    </div>
+                    </div> -->
                     <h6 class="footer-contacts__address_heading">Адреса офисов</h6>
                     <div class="footer-contacts__item footer-contacts__bottom-item">
                         350061, г. Краснодар, ул. Им.Мачуги В.Н., д.108, офис 103
@@ -2904,7 +2922,9 @@
                         class="modal__form" data-action="consultation">
                         {% csrf_token %}
                         <input type="hidden" name="from" value="Заявка на звонок">
-                        {{ contact_form.phone_contact }}
+                        <input type="tel" class="modal__input" placeholder="+7 999 123 45 67" name="phone_contact"
+                            pattern="\+7(\s+)?\(?\d{3}\)?(\s+)?\d{3}(\s+)?(-)?\d{2}(\s+)?(-)?\d{2}" required=""
+                            autocomplete="tel">
                         <button type="submit" class="modal__submit page-btn">
                             Оставить заявку
                         </button>
@@ -3046,7 +3066,9 @@
                         <p>
                             Наш менеджер свяжемся с Вами и ответит на любые возникшие вопросы.
                         </p>
-                        {{ contact_form.phone_contact }}
+                        <input type="tel" class="form-control" placeholder="+7 999 123 45 67" name="phone_contact"
+                            pattern="\+7(\s+)?\(?\d{3}\)?(\s+)?\d{3}(\s+)?(-)?\d{2}(\s+)?(-)?\d{2}" required=""
+                            autocomplete="tel">
                         <button type="submit" class="standard_button">
                             Оставить заявку
                         </button>
