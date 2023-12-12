@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import platform
 
+current_os = platform.system()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-t^7q^)tx1@z)9o4yq0exix&&zd004m!i3sq#zowa-c-$l_h88q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['79.174.81.201', 'localhost', 'xn----8sba1ancqhb5ag5d.xn--p1ai', 'www.xn----8sba1ancqhb5ag5d.xn--p1ai/']
+ALLOWED_HOSTS = ['79.174.81.201', 'localhost', 'xn----8sba1ancqhb5ag5d.xn--p1ai', 'www.xn----8sba1ancqhb5ag5d.xn--p1ai/', '127.0.0.1']
 
 
 # Application definition
@@ -80,16 +82,25 @@ WSGI_APPLICATION = 'skazka.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'skazkadb',
-        'USER': 'skyhelper',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '',
+if current_os == 'Windows':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+
+else:  # Для любой другой ОС (например, Linux, macOS)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'skazkadb',
+            'USER': 'skyhelper',
+            'PASSWORD': 'admin',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
 
 
 # Password validation
@@ -126,15 +137,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# STATICFILES_DIRS = [
-#     os.path.join('static/'),
-# ]
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+#PRODUCTION
+# STATIC_URL = 'static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
+#DEVELOPMENT
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

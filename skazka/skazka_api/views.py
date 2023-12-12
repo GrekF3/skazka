@@ -19,7 +19,6 @@ def send_telegram_message(chat_id, message):
         return False
 
 def index(request):
-    print(request.POST)
     contact_form = ClientForm()
     price_form = PriceForm()
     calculator_form = CalculatorForm()
